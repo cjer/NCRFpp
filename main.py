@@ -25,7 +25,7 @@ except ImportError:
     import pickle
 
 
-seed_num = 42
+seed_num = 43
 random.seed(seed_num)
 torch.manual_seed(seed_num)
 np.random.seed(seed_num)
@@ -515,7 +515,8 @@ if __name__ == '__main__':
     parser.add_argument('--train', default="data/conll03/train.bmes") 
     parser.add_argument('--dev', default="data/conll03/dev.bmes" )  
     parser.add_argument('--test', default="data/conll03/test.bmes") 
-    parser.add_argument('--seg', default="True") 
+    parser.add_argument('--seg', default="True")
+    parser.add_argument('--device', default="1") 
     parser.add_argument('--raw') 
     parser.add_argument('--loadmodel')
     parser.add_argument('--output') 
@@ -523,6 +524,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data = Data()
     data.HP_gpu = torch.cuda.is_available()
+
     if args.config == 'None':
         data.train_dir = args.train 
         data.dev_dir = args.dev 
@@ -541,7 +543,12 @@ if __name__ == '__main__':
     else:
         data.read_config(args.config)
     # data.show_data_summary()
+    
+    if data.HP_gpu:
+        torch.cuda.set_device(int(args.device))
+        
     status = data.status.lower()
+    
     print("Seed num:",seed_num)
 
     if status == 'train':

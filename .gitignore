@@ -7,3 +7,7 @@ demo.clf.*
 sent.*
 *.out
 *.log
+final_setup/
+final_setup_TEST/
+data/
+hp_search/

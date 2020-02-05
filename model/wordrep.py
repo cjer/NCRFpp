@@ -26,7 +26,8 @@ class WordRep(nn.Module):
             self.char_hidden_dim = data.HP_char_hidden_dim
             self.char_embedding_dim = data.char_emb_dim
             if data.char_feature_extractor == "CNN":
-                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
+                self.char_kernel_size = data.HP_char_kernel_size
+                self.char_feature = CharCNN(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu, self.char_kernel_size)
             elif data.char_feature_extractor == "LSTM":
                 self.char_feature = CharBiLSTM(data.char_alphabet.size(), data.pretrain_char_embedding, self.char_embedding_dim, self.char_hidden_dim, data.HP_dropout, self.gpu)
             elif data.char_feature_extractor == "GRU":

@@ -96,6 +96,7 @@ class Data:
         self.HP_iteration = 100
         self.HP_batch_size = 10
         self.HP_char_hidden_dim = 50
+        self.HP_char_kernel_size = 3
         self.HP_hidden_dim = 200
         self.HP_dropout = 0.5
         self.HP_lstm_layer = 1
@@ -157,6 +158,7 @@ class Data:
         if self.use_char:
             print("     Model char extractor: %s"%(self.char_feature_extractor))
             print("     Model char_hidden_dim: %s"%(self.HP_char_hidden_dim))
+            print("     Model char_kernel_size: %s"%(self.HP_char_kernel_size))
         print(" "+"++"*20)
         print(" Training:")
         print("     Optimizer: %s"%(self.optimizer))
@@ -503,6 +505,9 @@ class Data:
         the_item = 'char_hidden_dim'
         if the_item in config:
             self.HP_char_hidden_dim = int(config[the_item])
+        the_item = 'char_kernel_size'
+        if the_item in config:
+            self.HP_char_kernel_size = int(config[the_item])
         the_item = 'hidden_dim'
         if the_item in config:
             self.HP_hidden_dim = int(config[the_item])

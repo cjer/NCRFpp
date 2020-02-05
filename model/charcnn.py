@@ -10,18 +10,19 @@ import torch.nn.functional as F
 import numpy as np
 
 class CharCNN(nn.Module):
-    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu):
+    def __init__(self, alphabet_size, pretrain_char_embedding, embedding_dim, hidden_dim, dropout, gpu, kernel_size):
         super(CharCNN, self).__init__()
         print("build char sequence feature extractor: CNN ...")
         self.gpu = gpu
         self.hidden_dim = hidden_dim
         self.char_drop = nn.Dropout(dropout)
         self.char_embeddings = nn.Embedding(alphabet_size, embedding_dim)
+        self.kernel_size = kernel_size
         if pretrain_char_embedding is not None:
             self.char_embeddings.weight.data.copy_(torch.from_numpy(pretrain_char_embedding))
         else:
             self.char_embeddings.weight.data.copy_(torch.from_numpy(self.random_embedding(alphabet_size, embedding_dim)))
-        self.char_cnn = nn.Conv1d(embedding_dim, self.hidden_dim, kernel_size=3, padding=1)
+        self.char_cnn = nn.Conv1d(embedding_dim, self.hidden_dim, kernel_size=self.kernel_size, padding=int(self.kernel_size/2))
         if self.gpu:
             self.char_drop = self.char_drop.cuda()
             self.char_embeddings = self.char_embeddings.cuda()
